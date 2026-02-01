@@ -1,0 +1,167 @@
+/* Titre */
+.page-title {
+  text-align: center;
+  margin: 22px 0 14px;
+  font-size: 26px;
+  color: #3a3a3a;
+  font-weight: 700;
+}
+
+/* Barre de recherche */
+.search {
+  width: 100%;
+  max-width: 960px;
+  display: block;
+  margin: 0 auto 18px auto;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid #d9dde2;
+  background: #fff;
+  font-size: 13px;
+  outline: none;
+}
+
+.search:focus {
+  border-color: #9bbcf3;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+}
+
+/* Carte */
+.card {
+  max-width: 940px;
+  margin: 14px auto;
+  background: #ffffff;
+  border: 1px solid #e6eaee;
+  border-radius: 8px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+/* Titre de la suggestion */
+.title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2b2b2b;
+}
+
+/* Catégorie + date */
+.meta {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.cat {
+  color: #1b6fd1; /* bleu catégorie comme photo */
+  font-weight: 700;
+}
+
+.dot {
+  color: #9aa3ab;
+  margin: 0 6px;
+}
+
+.date {
+  color: #9aa3ab;
+}
+
+/* Description */
+.desc {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.45;
+}
+
+/* Badge status */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: .4px;
+}
+
+/* ACCEPTÉE (vert clair) */
+.badge.acceptee {
+  background: #d7f3e4;
+  color: #2e8b57;
+}
+
+/* REFUSÉE (rose clair) */
+.badge.refusee {
+  background: #ffd6dc;
+  color: #b4232c;
+}
+
+/* EN ATTENTE (jaune clair) */
+.badge.en_attente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* Zone boutons */
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+/* Boutons style général */
+button {
+  border: 1px solid #d9dde2;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  background: #f7f8fa;
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
+/* Like bleu */
+.like-btn {
+  background: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+  font-weight: 700;
+}
+
+/* Favoris gris */
+.fav-btn {
+  background: #f6e039;
+  color: #333;
+  font-weight: 700;
+}
+
+.favorites-section {
+  margin-top: 40px;
+}
+
+.favorites-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+/* Réutilise le style des cards */
+.fav-card {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Bouton retirer discret */
+.remove-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
