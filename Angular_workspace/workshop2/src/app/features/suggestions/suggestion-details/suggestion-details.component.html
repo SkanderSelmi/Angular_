@@ -1,0 +1,36 @@
+<div class="details-container" *ngIf="suggestion">
+  <h2 class="details-title">{{ suggestion.title }}</h2>
+
+  <div class="details-meta">
+    <div class="meta-item">
+      <span class="meta-label">Catégorie:</span>
+      <span class="meta-value category-value">{{ suggestion.category }}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Date:</span>
+      <span class="meta-value">{{ suggestion.date | date:'dd MMM yyyy' }}</span>
+    </div>
+  </div>
+
+  <p class="details-description">{{ suggestion.description }}</p>
+
+  <div>
+    <span class="meta-label">Statut:</span>
+    <span class="status-badge" [ngClass]="suggestion.status">
+      {{ suggestion.status | uppercase }}
+    </span>
+  </div>
+
+  <div class="likes-section">
+    <span class="meta-label">Likes:</span>
+    <span class="likes-count">👍 {{ suggestion.nbLikes }}</span>
+  </div>
+
+  <button class="back-btn" (click)="goBack()">← Retour à la liste</button>
+</div>
+
+<div class="error-container" *ngIf="!suggestion">
+  <h2 class="error-title">❌ Suggestion introuvable!</h2>
+  <p class="error-message">La suggestion avec l'ID {{ suggestionId }} n'existe pas.</p>
+  <button class="back-btn" (click)="goBack()">← Retour à la liste</button>
+</div>

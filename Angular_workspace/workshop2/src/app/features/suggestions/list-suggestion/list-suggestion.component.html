@@ -22,7 +22,10 @@
       👍 Like {{ s.nbLikes }}
     </button>
     <button class="fav-btn" (click)="addToFavorites(s)">
-    ❤️ Ajouter aux favoris
+      ❤️ Ajouter aux favoris
+    </button>
+    <button class="details-btn" [routerLink]="['/suggestions', s.id]">
+      📄 Details
     </button>
   </div>
 </div>
@@ -42,4 +45,3 @@
     </button>
   </div>
 </div>
-
