@@ -1,0 +1,9 @@
+<div *ngIf="C">
+  <h2>Détails du Déchet</h2>
+  <p>Type de Déchet: {{ C.typeDechet }}</p>   
+  <p>Zone: {{ C.zone }}</p>                   
+  <p>Capacite: {{ C.capacite }}</p>           
+  <p>Date de Collecte: {{ C.date | date }}</p>
+  <p>statut: {{ C.statut }}</p>               
+  <button [routerLink]="['update', C.id]">Mettre à jour</button>
+</div>

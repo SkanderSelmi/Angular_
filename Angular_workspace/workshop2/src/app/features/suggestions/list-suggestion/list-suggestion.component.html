@@ -1,6 +1,10 @@
+
 <h2 class="page-title">Liste des suggestions</h2>
 
-<input class="search" type="text" placeholder="Rechercher une suggestion" [(ngModel)]="searchText"/>
+<div class="header-actions">
+  <input class="search" type="text" placeholder="Rechercher une suggestion" [(ngModel)]="searchText"/>
+  <button class="add-btn" [routerLink]="['/suggestions/add']">➕ Ajouter suggestion</button>
+</div>
 
 <div class="card" *ngFor="let s of filteredSuggestions">
   <h3 class="title">{{ s.title }}</h3>

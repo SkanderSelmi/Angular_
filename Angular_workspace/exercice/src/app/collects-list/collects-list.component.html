@@ -1,0 +1,7 @@
+<h1>Liste des Déchets</h1>
+<ul>
+  <li *ngFor="let dechet of listeDechets">
+    {{ dechet.typeDechet }} - {{ dechet.zone }}
+    <button [routerLink]="['/details', dechet.id]">Voir Détails</button>
+  </li>
+</ul>

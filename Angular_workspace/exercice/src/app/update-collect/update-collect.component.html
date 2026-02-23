@@ -1,0 +1,15 @@
+<div *ngIf="updateForm.get('typeDechet')?.invalid && updateForm.get('typeDechet')?.touched">
+
+<small *ngIf="updateForm.get('zone')?.errors?.['required'] && updateForm.get('zone')?.touched">
+  Zone requise.
+</small>
+
+<small *ngIf="updateForm.get('zone')?.errors?.['minlength'] && updateForm.get('zone')?.touched">
+  Zone doit être au minimum 3 caractères
+</small>
+
+<div *ngIf="updateForm.get('statut')?.invalid && updateForm.get('statut')?.touched">
+
+<div *ngIf="updateForm.get('capacite')?.invalid && updateForm.get('capacite')?.touched">
+
+<button type="submit" [disabled]="updateForm.invalid">Mettre à jour</button>
