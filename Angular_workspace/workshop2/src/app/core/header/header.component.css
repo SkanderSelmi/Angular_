@@ -58,3 +58,36 @@
 .btn:hover {
   opacity: 0.92;
 }
+
+.link {
+  color: #e6eef5;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.link:hover {
+  color: #ffffff;
+}
+
+.navbar .btn {
+  background: #4da3ff;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 7px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.navbar .btn:hover {
+  background: #3a8be0;
+}
+
+.active {
+  color: #4da3ff;
+  border-bottom: 2px solid #4da3ff;
+  padding-bottom: 4px;
+}

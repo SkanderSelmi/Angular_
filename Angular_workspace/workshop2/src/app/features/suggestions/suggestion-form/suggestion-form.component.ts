@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Suggestion } from '../../../models/suggestion';
+import { SuggestionService } from '../../../core/services/suggestion.service';
 
 @Component({
   selector: 'app-suggestion-form',
@@ -11,6 +12,8 @@ import { Suggestion } from '../../../models/suggestion';
 export class SuggestionFormComponent implements OnInit {
 
    suggestionForm!: FormGroup;
+   isEditMode = false;
+   suggestionId?: number;
   
   categories: string[] = [
     'Infrastructure et bâtiments',
@@ -25,53 +28,27 @@ export class SuggestionFormComponent implements OnInit {
     'Autre'
   ];
 
-  // Temporary storage (in real app, use a service)
-  suggestions: Suggestion[] = [
-    {
-      id: 1,
-      title: 'Organiser une journée team building',
-      description: 'Suggestion pour organiser une journée de team building pour renforcer les liens entre les membres de l\'équipe.',
-      category: 'Événements',
-      date: new Date('2025-01-20'), 
-      status: 'acceptee',
-      nbLikes: 10
-    },
-    {
-      id: 2,
-      title: 'Améliorer le système de réservation',
-      description: 'Proposition pour améliorer la gestion des réservations en ligne avec un système de confirmation automatique.',
-      category: 'Technologie',
-      date: new Date('2025-01-15'), 
-      status: 'refusee',
-      nbLikes: 0
-    },
-    {
-      id: 3,
-      title: 'Créer un système de récompenses',
-      description: 'Mise en place d\'un programme de récompenses pour motiver les employés et reconnaître leurs efforts.',
-      category: 'Ressources Humaines', 
-      date: new Date('2025-01-25'), 
-      status: 'refusee',
-      nbLikes: 0
-    },
-    {
-      id: 4,
-      title: 'Moderniser l\'interface utilisateur',
-      description: 'Refonte complète de l\'interface utilisateur pour une meilleure expérience utilisateur.',
-      category: 'Technologie',
-      date: new Date('2025-01-30'), 
-      status: 'en_attente',
-      nbLikes: 0
-    }
-  ];
-
+  
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private suggestionService: SuggestionService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+     // Check if we're in edit mode by checking the route parameter
+    const id = this.route.snapshot.paramMap.get('id');
+    
+    if (id) {
+      this.isEditMode = true;
+      this.suggestionId = Number(id);
+      console.log('Edit mode - ID:', this.suggestionId); // Debug log
+      this.loadSuggestion();
+    } else {
+      console.log('Add mode'); // Debug log
+    }
   }
 
   initForm(): void {
@@ -87,7 +64,26 @@ export class SuggestionFormComponent implements OnInit {
       ]],
       category: ['', Validators.required],
       date: [{ value: new Date().toISOString().split('T')[0], disabled: true }],
-      status: [{ value: 'en attente', disabled: true }]
+      status: [{ value: 'en attente', disabled: true }],
+      nbLikes: [0]
+    });
+  }
+
+   loadSuggestion(): void {
+    this.suggestionService.getSuggestionById(this.suggestionId!).subscribe({
+      next: (response) => {
+         console.log('Loaded suggestion:', response); // Debug log
+        const suggestion = response.suggestion;
+        
+        // Format date for input field
+        const formattedDate = new Date(suggestion.date).toISOString().split('T')[0];
+        
+        this.suggestionForm.patchValue(response.suggestion);
+      },
+      error: (err) => {
+        console.error('Error loading suggestion:', err);
+        alert('Erreur lors du chargement de la suggestion');
+      }
     });
   }
 
@@ -98,14 +94,8 @@ export class SuggestionFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.suggestionForm.valid) {
-      // Generate new ID
-      const newId = this.suggestions.length > 0 
-        ? Math.max(...this.suggestions.map(s => s.id)) + 1 
-        : 1;
-
-      // Create new suggestion
-      const newSuggestion: Suggestion = {
-        id: newId,
+      const suggestionData: Suggestion = {
+        id: this.suggestionId || 0,
         title: this.suggestionForm.get('title')?.value,
         description: this.suggestionForm.get('description')?.value,
         category: this.suggestionForm.get('category')?.value,
@@ -114,14 +104,29 @@ export class SuggestionFormComponent implements OnInit {
         nbLikes: 0
       };
 
-      // Add to array (in real app, use a service)
-      this.suggestions.push(newSuggestion);
-
-      console.log('New suggestion added:', newSuggestion);
-      console.log('All suggestions:', this.suggestions);
-
-      // Navigate back to list
-      this.router.navigate(['/suggestions']);
+      if (this.isEditMode && this.suggestionId) {
+        console.log('Updating suggestion ID:', this.suggestionId, suggestionData); // Debug
+        // Update existing suggestion
+        this.suggestionService.updateSuggestion(this.suggestionId!, suggestionData).subscribe({
+          next: () => {
+            this.router.navigate(['/suggestions']);
+          },
+          error: (err) => {
+            console.error('Error updating suggestion:', err);
+          }
+        });
+      } else {
+        // Add new suggestion
+        console.log('Adding new suggestion:', suggestionData); // Debug
+        this.suggestionService.addSuggestion(suggestionData).subscribe({
+          next: () => {
+            this.router.navigate(['/suggestions']);
+          },
+          error: (err) => {
+            console.error('Error adding suggestion:', err);
+          }
+        });
+      }
     }
   }
 

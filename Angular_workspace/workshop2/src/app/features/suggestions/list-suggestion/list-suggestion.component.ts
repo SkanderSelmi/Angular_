@@ -1,79 +1,79 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Suggestion } from '../../../models/suggestion';
+import { SuggestionService } from '../../../core/services/suggestion.service';
 @Component({
   selector: 'app-list-suggestion',
   templateUrl: './list-suggestion.component.html',
   styleUrl: './list-suggestion.component.css'
 })
-export class ListSuggestionComponent {
+export class ListSuggestionComponent implements OnInit{
+ 
    searchText: string = '';
 
   favorites: Suggestion[] = [];
 
-  suggestions: Suggestion[] = [
-    {
-      id: 1,
-      title: 'Organiser une journée team building',
-      description: "Suggestion pour organiser une journée de team building pour renforcer les liens entre les membres de l'équipe.",
-      category: 'Événements',
-      date: new Date('2025-01-20'),
-      status: 'acceptee',
-      nbLikes: 10
-    },
-    {
-      id: 2,
-      title: 'Améliorer le système de réservation',
-      description: "Proposition pour améliorer la gestion des réservations en ligne avec un système de confirmation automatique.",
-      category: 'Technologie',
-      date: new Date('2025-01-15'),
-      status: 'refusee',
-      nbLikes: 0
-    },
-    {
-      id: 3,
-      title: 'Créer un système de récompenses',
-      description: "Mise en place d'un programme de récompenses pour motiver les employés et reconnaître leurs efforts.",
-      category: 'Ressources Humaines',
-      date: new Date('2025-01-25'),
-      status: 'refusee',
-      nbLikes: 0
-    },
-    {
-      id: 4,
-      title: "Moderniser l'interface utilisateur",
-      description: "Refonte complète de l'interface utilisateur pour une meilleure expérience utilisateur.",
-      category: 'Technologie',
-      date: new Date('2025-01-30'),
-      status: 'en_attente',
-      nbLikes: 0
-    }
-  ];
+  suggestions: Suggestion[] = [];
 
-  // ✅ Like : incrémenter nbLikes
-  likeSuggestion(s: Suggestion) {
-    s.nbLikes++;
+constructor(private suggestionService: SuggestionService) {}
+
+ ngOnInit(): void {
+    this.loadSuggestions();
   }
 
-  // ✅ Favoris : ajouter à favorites (éviter doublons)
-  addToFavorites(s: Suggestion) {
-    const exists = this.favorites.some(f => f.id === s.id);
-    if (!exists) {
-      this.favorites.push(s);
-    }
-  }
-removeFromFavorites(s: Suggestion) {
-  this.favorites = this.favorites.filter(f => f.id !== s.id);
-}
 
-  // ✅ Filtre par titre OU catégorie
+  loadSuggestions(): void {
+    this.suggestionService.getSuggestionsList().subscribe({
+      next: (data) => {
+        this.suggestions = data;
+      },
+      error: (err) => {
+        console.error('Error loading suggestions:', err);
+      }
+    });
+  }
+
   get filteredSuggestions(): Suggestion[] {
-    const t = this.searchText.toLowerCase().trim();
-    if (!t) return this.suggestions;
-
+    if (!this.searchText) {
+      return this.suggestions;
+    }
     return this.suggestions.filter(s =>
-      s.title.toLowerCase().includes(t) ||
-      s.category.toLowerCase().includes(t)
+      s.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      s.category.toLowerCase().includes(this.searchText.toLowerCase())
     );
+  }
+
+  likeSuggestion(suggestion: Suggestion): void {
+    this.suggestionService.likeSuggestion(suggestion.id).subscribe({
+      next: () => {
+        suggestion.nbLikes++;
+      },
+      error: (err) => {
+        console.error('Error liking suggestion:', err);
+      }
+    });
+  }
+
+  deleteSuggestion(suggestion: Suggestion): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette suggestion?')) {
+      this.suggestionService.deleteSuggestion(suggestion.id).subscribe({
+        next: () => {
+          this.loadSuggestions(); // Reload list
+        },
+        error: (err) => {
+          console.error('Error deleting suggestion:', err);
+        }
+      });
+    }
+  }
+
+  addToFavorites(suggestion: Suggestion): void {
+    if (!this.favorites.find(f => f.id === suggestion.id)) {
+      this.favorites.push(suggestion);
+    }
+  }
+
+  removeFromFavorites(suggestion: Suggestion): void {
+    this.favorites = this.favorites.filter(f => f.id !== suggestion.id);
   }
 
 }

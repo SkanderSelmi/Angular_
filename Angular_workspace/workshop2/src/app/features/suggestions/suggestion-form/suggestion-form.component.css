@@ -88,3 +88,11 @@ textarea.form-control {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+.form-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #2b2b2b;
+  font-weight: 700;
+}

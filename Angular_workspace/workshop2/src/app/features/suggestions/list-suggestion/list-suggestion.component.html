@@ -31,6 +31,9 @@
     <button class="details-btn" [routerLink]="['/suggestions', s.id]">
       📄 Details
     </button>
+     <button class="delete-btn" (click)="deleteSuggestion(s)">
+    🗑️ Supprimer
+  </button>
   </div>
 </div>
 

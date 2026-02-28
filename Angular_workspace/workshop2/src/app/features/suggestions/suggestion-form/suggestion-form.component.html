@@ -1,4 +1,5 @@
 <div class="form-container">
+  <h2 class="form-title">{{ isEditMode ? 'Modifier la suggestion' : 'Ajouter une suggestion' }}</h2>
   <form [formGroup]="suggestionForm" (ngSubmit)="onSubmit()">
     
     <!-- Title Field -->
@@ -81,7 +82,7 @@
       class="submit-btn"
       [disabled]="suggestionForm.invalid"
     >
-      Soumettre
+       {{ isEditMode ? 'Mettre à jour' : 'Soumettre' }}
     </button>
   </form>
 </div>

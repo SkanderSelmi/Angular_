@@ -204,3 +204,15 @@ button:hover {
   background: #218838;
   border-color: #1e7e34;
 }
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
+  font-weight: 700;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+  border-color: #bd2130;
+}
